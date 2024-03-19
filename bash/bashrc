@@ -1,0 +1,81 @@
+# ----- Determine Mac or Linux -----
+function get_os_type {
+	if [[ $(uname) = *[dD]arwin* ]]
+	then 
+		echo 'mac'
+	else
+		echo 'linux'
+	fi
+}
+OS_TYPE=$(get_os_type) 
+
+# ----- Path Variables -----
+if [ $OS_TYPE = 'mac' ]
+then
+	export PATH=$PATH:/opt/homebrew/bin/
+if [ $OS_TYPE = 'linux' ]
+then
+	export PATH=$PATH
+fi
+
+# ----- Aliases -----
+alias ll='ls -lah --color=auto'
+alias ls='ls --color=auto'
+
+# ----- History Settings -----
+HISTTIMEFORMAT="%F %T"
+HISTCONTROL=ignoredups
+HISTSIZE=5000
+HISTFILESIZE=5000
+
+# ----- Define Colors -----
+clr='\[\033[00m\]'      # Reset
+blk='\[\033[01;30m\]'   # Black
+red='\[\033[01;31m\]'   # Red
+grn='\[\033[01;32m\]'   # Green
+ylw='\[\033[01;33m\]'   # Yellow
+blu='\[\033[01;34m\]'   # Blue
+pur='\[\033[01;35m\]'   # Purple
+cyn='\[\033[01;96m\]'   # Cyan
+wht='\[\033[01;97m\]'   # White
+
+bblk='\[\033[01;40m\]'
+
+# ----- Get OS Dependent Values -----
+
+
+# ----- Set Prompt -----
+function git_branch() {
+    if [ -d .git ] ; then
+        printf "%s" " ($(git branch 2> /dev/null | awk '/\*/{print $2}'))";
+    fi
+}
+
+function bash_prompt(){
+	PS1="${blu}[\t]\
+${ylw}$(git_branch)\
+ ${grn}\u@\h\
+${wht}:\W\
+ ${ylw}\$ \
+${clr}"
+}
+
+#PROMPT_COMMAND=$(bash_prompt)
+
+# ----- LS Colors -----
+# Mac Colors
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+# Linux Colors (need to update)
+#export LS_COLORS=abc
+
+# ----- Startup Print ----- 
+clear
+
+printf "\n"
+printf "   %s\n" "USER: $(echo $USER)"
+printf "   %s\n" "DATE: $(date)"
+printf "   %s\n" "HOSTNAME: $(hostname -f)"
+printf "   %s\n" "KERNEL: $(uname -rms)"
+printf "\n"
