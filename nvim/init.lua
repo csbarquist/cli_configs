@@ -1,2 +1,2 @@
-require('plugins')
-require('mason-config')
+require("vlu.core")
+require("vlu.lazy")
